@@ -35,8 +35,14 @@ set -eu -o pipefail
     }
 }
 
-PR_SAMPLESIZE=2500
-COMMIT_PR_SAMPLESIZE=2000
+# The sample sizes don't represent how many PRs we look at.
+# There's a github API that lists all of the PRs associated with a commit,
+# but we would have to call that on a per commit basis which is too time consuming to be practical.
+# Therefore, we apply a heuristic to get those associations, but we don't know how good that heuristic is.
+# So we call the aforementioned Github API on a sample
+# and compare that to our heuristic to determine how good our heuristic is.
+PR_SAMPLESIZE=250
+COMMIT_PR_SAMPLESIZE=200
 
 #an outer bound for how many pages of PRs we'll try to fetch
 #the vast majority (>95%) of OSS benchmark repos are captured by just 20 pages
