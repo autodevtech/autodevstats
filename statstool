@@ -35,18 +35,22 @@ set -eu -o pipefail
     }
 }
 
+# The sample sizes don't represent how many PRs we look at.
+# There's a github API that lists all of the PRs associated with a commit,
+# but we would have to call that on a per commit basis which is too time consuming to be practical.
+# Therefore, we apply a heuristic to get those associations, but we don't know how good that heuristic is.
+# So we call the aforementioned Github API on a sample
+# and compare that to our heuristic to determine how good our heuristic is.
 PR_SAMPLESIZE=250
 COMMIT_PR_SAMPLESIZE=200
 
 #an outer bound for how many pages of PRs we'll try to fetch
-#this is enough to hopefully capture ~1 year of PRs even for very active repos
 #the vast majority (>95%) of OSS benchmark repos are captured by just 20 pages
-MAX_ALL_PR_PAGES=60
-#an outer bound for how much data we'll pull from github, 3 years
-MAX_SPAN_DAYS=730
+MAX_ALL_PR_PAGES=600
+#an outer bound for how much data we'll pull from github, 20 years
+MAX_SPAN_DAYS=7300
 #we'll run sets of time-bound analyses:
 SPAN_DAYS="183 365 730 1460"
-#SPAN_DAYS=365
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
