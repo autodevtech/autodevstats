@@ -37,14 +37,14 @@ set -eu -o pipefail
 # Therefore, we apply a heuristic to get those associations, but we don't know how good that heuristic is.
 # So we call the aforementioned Github API on a sample
 # and compare that to our heuristic to determine how good our heuristic is.
-PR_SAMPLESIZE=250
-COMMIT_PR_SAMPLESIZE=200
+PR_SAMPLESIZE=1
+COMMIT_PR_SAMPLESIZE=1
 
 #an outer bound for how many pages of PRs we'll try to fetch
 #the vast majority (>95%) of OSS benchmark repos are captured by just 20 pages
 MAX_ALL_PR_PAGES=600
 #an outer bound for how much data we'll pull from github, 20 years
-MAX_SPAN_DAYS=7300
+MAX_SPAN_DAYS=365
 #we'll run sets of time-bound analyses:
 SPAN_DAYS="183 365 730 1460"
 

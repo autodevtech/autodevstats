@@ -5,9 +5,9 @@ set -eu -o pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 MAX_ALL_PR_PAGES=600
-COMMIT_PR_SAMPLESIZE=200
-PR_SAMPLESIZE=250
-MAX_SPAN_DAYS=7300
+COMMIT_PR_SAMPLESIZE=1
+PR_SAMPLESIZE=1
+MAX_SPAN_DAYS=365
 
 ORIGIN_REMOTE="origin"
 ORIGIN_URL="$(git config --get-regex remote.${ORIGIN_REMOTE}.url | gawk '{print $2}')" || true
