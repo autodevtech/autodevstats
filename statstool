@@ -44,7 +44,7 @@ COMMIT_PR_SAMPLESIZE=${COMMIT_PR_SAMPLESIZE:-200}
 #the vast majority (>95%) of OSS benchmark repos are captured by just 20 pages
 MAX_ALL_PR_PAGES=600
 #an outer bound for how much data we'll pull from github, 20 years
-MAX_SPAN_DAYS=${MAX_SPAN_DAYS:-3700}
+MAX_SPAN_DAYS=${MAX_SPAN_DAYS:-7300}
 #we'll run sets of time-bound analyses:
 SPAN_DAYS="183 365 730 1460"
 
