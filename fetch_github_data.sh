@@ -7,7 +7,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 MAX_ALL_PR_PAGES=600
 PR_SAMPLESIZE=${PR_SAMPLESIZE:-250}
 COMMIT_PR_SAMPLESIZE=${COMMIT_PR_SAMPLESIZE:-200}
-MAX_SPAN_DAYS=${MAX_SPAN_DAYS:-3700}
+MAX_SPAN_DAYS=${MAX_SPAN_DAYS:-7300}
 
 ORIGIN_REMOTE="origin"
 ORIGIN_URL="$(git config --get-regex remote.${ORIGIN_REMOTE}.url | gawk '{print $2}')" || true
