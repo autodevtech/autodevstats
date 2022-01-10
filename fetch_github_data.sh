@@ -52,8 +52,8 @@ EARLIEST_DATE="2021-03-01T00:00:00Z"
 # "In order to keep the API fast for everyone, pagination is limited for this resource. Check the rel=last link relation in the Link response header to see how far back you can traverse."
 # would need an incremental crawler to crawl deeper
 # this will get the most recent 400 pages, regardless of their relation to pulls
-if !(echo 'https://api.github.com/repos/'${REPO}'/issues/comments?since='${EARLIEST_DATE}'&sort=created&direction=desc&per_page=100' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" ${DIR}/fetch-comments.sh | gzip -c > ${DATADIR}/issue-comments.gz);then
-    zcat ${DATADIR}/pulls.gz | jq -r '.[] | .comments_url' | sed 's/$/?per_page=100/' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" SILENT=true ${DIR}/fetch-comments.sh | pv -l -s $(zcat ${DATADIR}/pulls.gz | jq -r '.[] | .comments_url' | wc -l) | gzip -c > ${DATADIR}/issue-comments.gz
+# if !(echo 'https://api.github.com/repos/'${REPO}'/issues/comments?since='${EARLIEST_DATE}'&sort=created&direction=desc&per_page=100' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" ${DIR}/fetch-comments.sh | gzip -c > ${DATADIR}/issue-comments.gz);then
+#     zcat ${DATADIR}/pulls.gz | jq -r '.[] | .comments_url' | sed 's/$/?per_page=100/' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" SILENT=true ${DIR}/fetch-comments.sh | pv -l -s $(zcat ${DATADIR}/pulls.gz | jq -r '.[] | .comments_url' | wc -l) | gzip -c > ${DATADIR}/issue-comments.gz
 fi
 #if [ $(zcat ${DATADIR}/issue-comments.gz | zcat | wc -l) -eq 400 ]; then
     #TODO: what to do if we get cut off on comments?
