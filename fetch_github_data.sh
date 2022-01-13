@@ -41,7 +41,6 @@ EARLIEST_DATE=$EARLIEST_PR
 if [[ "$EARLIEST_DATE" < "$MAX_SPAN_DATE" ]]; then
     EARLIEST_DATE=$MAX_SPAN_DATE
 fi
-EARLIEST_DATE="2021-03-01T00:00:00Z"
 
 echo 'https://api.github.com/repos/'${REPO}'/issues?since='${EARLIEST_DATE}'&state=all&sort=created&direction=desc&per_page=100' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" ${DIR}/fetch-comments.sh | gzip -c > ${DATADIR}/issues.gz
 #zcat ${DATADIR}/pulls.gz | jq -r '.[] | .issue_url' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" SILENT=true ${DIR}/fetch-comments.sh | pv -l -s $(zcat ${DATADIR}/pulls.gz | jq -r '.[] | .issue_url' | wc -l) | gzip -c > ${DATADIR}/issue.gz
