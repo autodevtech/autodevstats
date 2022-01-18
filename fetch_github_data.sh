@@ -42,25 +42,6 @@ if [[ "$EARLIEST_DATE" < "$MAX_SPAN_DATE" ]]; then
     EARLIEST_DATE=$MAX_SPAN_DATE
 fi
 
-if ! (echo 'https://api.github.com/repos/'${REPO}'/pulls/comments?since='${EARLIEST_DATE}'&sort=created&direction=desc&per_page=100' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" ${DIR}/fetch-comments.sh | gzip -c > ${DATADIR}/pull-comments.gz); then
-    zcat ${DATADIR}/pulls.gz | jq -r '.[] | .review_comments_url' | sed 's/$/?per_page=100/' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" SILENT=true ${DIR}/fetch-comments.sh | pv -l -s $(zcat ${DATADIR}/pulls.gz | jq -r '.[] | .review_comments_url' | wc -l) | gzip -c > ${DATADIR}/pull-comments.gz
-fi
-
-# TODO: issue/comments maxes out at 400 pages
-# if you request the 401st page, it'll say:
-# "In order to keep the API fast for everyone, pagination is limited for this resource. Check the rel=last link relation in the Link response header to see how far back you can traverse."
-# would need an incremental crawler to crawl deeper
-# this will get the most recent 400 pages, regardless of their relation to pulls
-if !(echo 'https://api.github.com/repos/'${REPO}'/issues/comments?since='${EARLIEST_DATE}'&sort=created&direction=desc&per_page=100' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" ${DIR}/fetch-comments.sh | gzip -c > ${DATADIR}/issue-comments.gz);then
-    zcat ${DATADIR}/pulls.gz | jq -r '.[] | .comments_url' | sed 's/$/?per_page=100/' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" SILENT=true ${DIR}/fetch-comments.sh | pv -l -s $(zcat ${DATADIR}/pulls.gz | jq -r '.[] | .comments_url' | wc -l) | gzip -c > ${DATADIR}/issue-comments.gz
-fi
-#if [ $(zcat ${DATADIR}/issue-comments.gz | zcat | wc -l) -eq 400 ]; then
-    #TODO: what to do if we get cut off on comments?
-    #A. replace with pull-by-pull and live with not having non-PR comments
-    #B. repeatedly recompute latest date and ask for more since then
-    #C. compute diff on PRs and fetch missing (maybe handle the edge case?)
-    #D. ignore it? maybe measure how often this happens?
-#fi
 echo 'https://api.github.com/repos/'${REPO}'/issues?since='${EARLIEST_DATE}'&state=all&sort=created&direction=desc&per_page=100' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" ${DIR}/fetch-comments.sh | gzip -c > ${DATADIR}/issues.gz
 #zcat ${DATADIR}/pulls.gz | jq -r '.[] | .issue_url' | GITHUB_TOKEN=$GITHUB_TOKEN ALLCOMMENTS="" SILENT=true ${DIR}/fetch-comments.sh | pv -l -s $(zcat ${DATADIR}/pulls.gz | jq -r '.[] | .issue_url' | wc -l) | gzip -c > ${DATADIR}/issue.gz
 
